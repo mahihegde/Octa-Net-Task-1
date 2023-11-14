@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanMadeEasy To-Do List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('bg2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            color: #ffffff;
+
+        #brand {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #todo-container {
+            max-width: 500px
+            background-color: rgba(237, 120, 120, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(113, 102, 102, 0.1);
+            text-align: left;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            background-color: #f2f2f2;
+            color: #000000;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 16px);
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        #add-button {
+            padding: 8px;
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #add-button:hover {
+            background-color: #ff4500;
+        }
+
+        .complete-button,
+        .edit-button,
+        .delete-button {
+            padding: 8px;
+            margin-left: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .complete-button {
+            background-color: #00cc00;
+            color: #fff;
+        }
+
+        .edit-button {
+            background-color: #1a1aff;
+            color: #fff;
+        }
+
+        .delete-button {
+            background-color: #ff0000;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div id="brand">PlanMadeEasy</div>
+
+<div id="todo-container">
+    <input type="text" id="taskInput" placeholder="New Task">
+    <button id="add-button" onclick="addTask()">Add</button>
+
+    <ul id="taskList">
+    </ul>
+</div>
+
+<script>
+    function addTask() {
+        var taskInput = document.getElementById("taskInput");
+        var taskList = document.getElementById("taskList");
+
+        if (taskInput.value.trim() === "") {
+            alert("Please enter a task.");
+            return;
+        }
+
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(taskInput.value));
+
+        var completeBtn = createButton("✓", "complete-button", completeTask);
+        var editBtn = createButton("✎", "edit-button", editTask);
+        var deleteBtn = createButton("✖", "delete-button", deleteTask);
+
+        li.appendChild(completeBtn);
+        li.appendChild(editBtn);
+        li.appendChild(deleteBtn);
+
+        taskList.appendChild(li);
+
+        taskInput.value = "";
+    }
+
+    function completeTask() {
+        var listItem = this.parentNode;
+        listItem.classList.toggle("completed");
+    }
+
+    function editTask() {
+        var listItem = this.parentNode;
+        var newText = prompt("Edit task:", listItem.firstChild.nodeValue);
+        if (newText !== null) {
+            listItem.firstChild.nodeValue = newText;
+        }
+    }
+
+    function deleteTask() {
+        var listItem = this.parentNode;
+        listItem.parentNode.removeChild(listItem);
+    }
+
+    function createButton(text, className, clickHandler) {
+        var button = document.createElement("button");
+        button.appendChild(document.createTextNode(text));
+        button.className = className;
+        button.onclick = clickHandler;
+        return button;
+    }
+</script>
+
+</body>
+</html>
